@@ -18,10 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.zup.desafio.Proposta.status.StatusGateway;
+import br.com.zup.desafio.Proposta.status.StatusResponse;
+
 @RestController
 @RequestMapping("/proposta")
 public class PropostaController {
 
+	@Autowired
+	private StatusGateway statusGateway;
+	
 	@Autowired
 	private PropostaRepository propostaRepository;
 
@@ -46,7 +52,10 @@ public class PropostaController {
 		Proposta proposta = request.toModel();
 
 		proposta = propostaRepository.save(proposta);
-
+		
+		StatusResponse response = statusGateway.status(proposta.toStatus());
+		proposta.setStatus(response.getResultadoSolicitacao());
+		
 		logger.info("Proposta Criada com Sucesso!", proposta.getDocumento());
 
 		return ResponseEntity

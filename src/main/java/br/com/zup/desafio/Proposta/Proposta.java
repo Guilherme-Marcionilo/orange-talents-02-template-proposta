@@ -9,9 +9,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
+import br.com.zup.desafio.Proposta.status.StatusProposta;
+import br.com.zup.desafio.Proposta.status.StatusRequest;
 
 @Entity
 public class Proposta {
@@ -36,8 +37,8 @@ public class Proposta {
 	@Column(nullable = false)
 	private BigDecimal salario;
 
-	//@Enumerated(EnumType.STRING)
-	//private StatusProposta statusProposta;
+	@Enumerated(EnumType.STRING)
+	private PropostaStatus status;
 
 //	@OneToOne
 //	private Cartao cartao;
@@ -45,7 +46,7 @@ public class Proposta {
 	@Deprecated
 	public Proposta() {
 	}
-	
+
 	public Proposta(String documento, @Email String email, String nome, String endereco, BigDecimal salario) {
 		this.documento = documento;
 		this.email = email;
@@ -76,6 +77,21 @@ public class Proposta {
 
 	public BigDecimal getSalario() {
 		return salario;
+	}
+
+	public PropostaStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusProposta status) {
+		if (status == StatusProposta.COM_RESTRICAO)
+			this.status = PropostaStatus.NAO_ELEGIVEL;
+		else if (status == StatusProposta.SEM_RESTRICAO)
+			this.status = PropostaStatus.ELEGIVEL;
+	}
+
+	public StatusRequest toStatus() {
+		return new StatusRequest(nome, documento, id);
 	}
 
 }
