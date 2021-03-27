@@ -8,5 +8,5 @@ public interface StatusGateway {
 	
     @PostMapping
     StatusResponse status(StatusRequest form); 
-
+    
 }
