@@ -26,24 +26,27 @@ public class NovaPropostaRequest {
 	@NotBlank
 	private String nome;
 	
-	@NotBlank
+	@NotBlank (message = "Ops! Endereço inválido!")
 	private String endereco;
 	
-	@Positive
-	@NotNull
+	@Positive (message = "Ops! O salário deve ser um valor positivo!")
+	@NotNull()
 	private BigDecimal salario;
 	
 	@Deprecated
 	public NovaPropostaRequest() {}
 
 	public NovaPropostaRequest(@NotBlank String documento, @NotBlank @Email String email, @NotBlank String nome,
-			@NotBlank String endereco, @Positive BigDecimal salario) {
+			@NotBlank(message = "Ops! Endereço inválido!") String endereco,
+			@Positive(message = "Ops! O salário deve ser um valor positivo!") BigDecimal salario) {
 		this.documento = documento;
 		this.email = email;
 		this.nome = nome;
 		this.endereco = endereco;
 		this.salario = salario;
 	}
+
+
 
 	public String getDocumento() {
 		return documento;
@@ -68,4 +71,5 @@ public class NovaPropostaRequest {
 	public Proposta toModel() {
 		return new Proposta(this.documento, this.email, this.endereco, this.nome, this.salario);
 	}
+
 }

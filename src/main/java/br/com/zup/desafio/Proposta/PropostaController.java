@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class PropostaController {
 
 			logger.warn("Proposta não foi criada");
 
-			//Assert.assertTrue(propostaRepository.existsByDocumento(request.getDocumento()));
+			Assert.assertTrue(propostaRepository.existsByDocumento(request.getDocumento()));
 
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Ops! Isto não pode ser processado! Pois, o documento já existe!");
 
@@ -60,7 +61,7 @@ public class PropostaController {
 		Optional<Proposta> proposta = propostaRepository.findById(id);
 
 		if (proposta.isPresent()) {
-			//Assert.assertNotNull(proposta);
+			Assert.assertNotNull(proposta);
 			logger.info("Proposta encontrada");
 			return ResponseEntity.ok(proposta);
 		}

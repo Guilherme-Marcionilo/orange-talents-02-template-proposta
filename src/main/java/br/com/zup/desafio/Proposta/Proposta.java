@@ -4,10 +4,14 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
+
 
 @Entity
 public class Proposta {
@@ -16,25 +20,32 @@ public class Proposta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column (unique = true, length = 20)
+	@Column(unique = true, length = 20)
 	private String documento;
-	
-	@Email
-	@Column (unique = true, length = 50)
-	private String email;
-	
-	@Column (nullable = false)
-	private String nome;
-	
-	@Column (nullable = false)
-	private String endereco;
-	
-	@Column (nullable = false)
-	private BigDecimal salario;
-	
-	@Deprecated
-	public Proposta() {}
 
+	@Email
+	@Column(unique = true, length = 50)
+	private String email;
+
+	@Column(nullable = false)
+	private String nome;
+
+	@Column(nullable = false)
+	private String endereco;
+
+	@Column(nullable = false)
+	private BigDecimal salario;
+
+	//@Enumerated(EnumType.STRING)
+	//private StatusProposta statusProposta;
+
+//	@OneToOne
+//	private Cartao cartao;
+
+	@Deprecated
+	public Proposta() {
+	}
+	
 	public Proposta(String documento, @Email String email, String nome, String endereco, BigDecimal salario) {
 		this.documento = documento;
 		this.email = email;
@@ -66,5 +77,5 @@ public class Proposta {
 	public BigDecimal getSalario() {
 		return salario;
 	}
-	
+
 }
