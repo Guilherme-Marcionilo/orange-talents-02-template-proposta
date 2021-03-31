@@ -1,6 +1,7 @@
 package br.com.zup.desafio.Proposta;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 
+import br.com.zup.desafio.Proposta.cartoes.CartaoRequest;
 import br.com.zup.desafio.Proposta.status.StatusProposta;
 import br.com.zup.desafio.Proposta.status.StatusRequest;
 
@@ -40,9 +42,6 @@ public class Proposta {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private PropostaStatus status = PropostaStatus.NAO_ELEGIVEL;
-
-//	@OneToOne
-//	private Cartao cartao;
 
 	@Deprecated
 	public Proposta() {
@@ -102,14 +101,36 @@ public class Proposta {
 	}
 
 	public void updateStatus(PropostaStatus status) {
-		
-		if(status == null) {
+
+		if (status == null) {
 			throw new IllegalArgumentException("Ops! O status não pode ser nulo!");
 		}
-		
+
 		this.status = status;
 	}
-	
-	
+
+	public CartaoRequest toCartaoRequest() {
+
+		return new CartaoRequest(documento, nome, id);
+
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Proposta))
+			return false;
+		Proposta proposta = (Proposta) o;
+		return Objects.equals(getId(), proposta.getId()) && Objects.equals(getDocumento(), proposta.getDocumento())
+				&& Objects.equals(getNome(), proposta.getNome()) && Objects.equals(getEmail(), proposta.getEmail())
+				&& Objects.equals(getEndereco(), proposta.getEndereco())
+				&& Objects.equals(getSalario(), proposta.getSalario()) && getStatus() == proposta.getStatus();
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), getDocumento(), getNome(), getEmail(), getEndereco(), getSalario(), getStatus());
+	}
 
 }

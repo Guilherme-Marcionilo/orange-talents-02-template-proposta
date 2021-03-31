@@ -129,5 +129,46 @@ class PropostaControllerTest {
 	}
 	
 	
+	@Test
+	@DisplayName("Deveria Buscar Proposta Pelo ID")
+	void teste05() throws Exception {
+
+		String request = "{\n" + "   \"documento\": \"388.924.460-29\",\n" + "   \"email\": \"ae@gmail.com\",\n"
+				+ "   \"nome\": \"Guilherme\",\n" + "   \"endereco\": \"Rua Av. Paulista\",\n" + "   \"salario\": 212\n"
+				+ "}";
+
+		Proposta proposta = new Proposta("456.476.170-69", "a@gmail.com", "Guilherme", "Rua Av. Paulista",
+				new BigDecimal(1000.00));
+		em.persist(proposta);
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/proposta/{id}").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON).content(request))
+				.andExpect(MockMvcResultMatchers.status().is(200)).andDo(MockMvcResultHandlers.print());
+
+		assertNotNull(request);
+		Assertions.assertNotNull(proposta);
+	}
+	
+	
+	@Test
+	@DisplayName("NÃO Deveria Buscar Proposta Com ID Inválido")
+	void teste06() throws Exception {
+
+		String request = "{\n" + "   \"documento\": \"388.924.460-29\",\n" + "   \"email\": \"ae@gmail.com\",\n"
+				+ "   \"nome\": \"Guilherme\",\n" + "   \"endereco\": \"Rua Av. Paulista\",\n" + "   \"salario\": 212\n"
+				+ "}";
+
+		Proposta proposta = new Proposta("456.476.170-69", "a@gmail.com", "Guilherme", "Rua Av. Paulista",
+				new BigDecimal(1000.00));
+		em.persist(proposta);
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/proposta/{id}" + proposta.getId() + proposta.getStatus()).accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON).content(request))
+				.andExpect(MockMvcResultMatchers.status().is(200)).andDo(MockMvcResultHandlers.print());
+
+		assertNotNull(request);
+		Assertions.assertNotNull(proposta);
+	}
+	
 
 }
