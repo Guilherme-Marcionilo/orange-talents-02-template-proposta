@@ -38,7 +38,8 @@ public class Proposta {
 	private BigDecimal salario;
 
 	@Enumerated(EnumType.STRING)
-	private PropostaStatus status;
+	@Column(nullable = false)
+	private PropostaStatus status = PropostaStatus.NAO_ELEGIVEL;
 
 //	@OneToOne
 //	private Cartao cartao;
@@ -91,7 +92,24 @@ public class Proposta {
 	}
 
 	public StatusRequest toStatus() {
-		return new StatusRequest(nome, documento, id);
+		return new StatusRequest(new Proposta(this.documento, this.email, this.nome, this.endereco, this.salario));
 	}
+
+	@Override
+	public String toString() {
+		return "Proposta [id=" + id + ", documento=" + documento + ", email=" + email + ", nome=" + nome + ", endereco="
+				+ endereco + ", salario=" + salario + ", status=" + status + "]";
+	}
+
+	public void updateStatus(PropostaStatus status) {
+		
+		if(status == null) {
+			throw new IllegalArgumentException("Ops! O status não pode ser nulo!");
+		}
+		
+		this.status = status;
+	}
+	
+	
 
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.desafio.Proposta.status.StatusGateway;
+import br.com.zup.desafio.Proposta.status.StatusRequest;
 import br.com.zup.desafio.Proposta.status.StatusResponse;
 
 @RestController
@@ -34,6 +36,7 @@ public class PropostaController {
 	private final Logger logger = LoggerFactory.getLogger(PropostaController.class);
 
 	@PostMapping
+	@Transactional
 	ResponseEntity<?> cadastrar(@Valid @RequestBody NovaPropostaRequest request,
 			UriComponentsBuilder uriComponentsBuilder) {
 
@@ -51,16 +54,24 @@ public class PropostaController {
 		
 		Proposta proposta = request.toModel();
 
-		proposta = propostaRepository.save(proposta);
+		StatusRequest req = new StatusRequest(proposta);
+		StatusResponse response = statusGateway.status(req);
 		
-		StatusResponse response = statusGateway.status(proposta.toStatus());
-		proposta.setStatus(response.getResultadoSolicitacao());
+
+		//StatusProposta status = response.toModel();
+		PropostaStatus status = response.toModel();
+		proposta.updateStatus(status);
+		//proposta.setStatus(response.getResultadoSolicitacao());
+		
+		System.out.println(proposta);
 		
 		logger.info("Proposta Criada com Sucesso!", proposta.getDocumento());
+		propostaRepository.save(proposta);
+		
 
 		return ResponseEntity
 				.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
-
+ 
 	}
 
 	@GetMapping("/{id}")

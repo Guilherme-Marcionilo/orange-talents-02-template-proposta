@@ -1,5 +1,7 @@
 package br.com.zup.desafio.Proposta.status;
 
+import br.com.zup.desafio.Proposta.Proposta;
+
 public class StatusRequest {
 
 	private String documento;
@@ -8,13 +10,10 @@ public class StatusRequest {
 	
 	private Long idProposta;
 	
-	@Deprecated
-	public StatusRequest() {}
-	
-    public StatusRequest(String documento, String nome, Long idProposta) {
-        this.documento = documento;
-        this.nome = nome;
-        this.idProposta = idProposta;
+    public StatusRequest(Proposta proposta) {
+        this.documento = proposta.getDocumento();
+        this.nome = proposta.getNome();
+        this.idProposta = proposta.getId();
     }
     
     public String getDocumento() {

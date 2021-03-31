@@ -1,5 +1,7 @@
 package br.com.zup.desafio.Proposta.status;
 
+import br.com.zup.desafio.Proposta.PropostaStatus;
+
 public class StatusResponse {
 
 	private Long idProposta;
@@ -8,7 +10,7 @@ public class StatusResponse {
 
 	private String nome;
 
-	private StatusProposta resultadoSolicitacao;
+	private String status;
 
 	public Long getIdProposta() {
 		return idProposta;
@@ -21,9 +23,26 @@ public class StatusResponse {
 	public String getNome() {
 		return nome;
 	}
+	
 
-	public StatusProposta getResultadoSolicitacao() {
-		return resultadoSolicitacao;
+	public String getStatus() {
+		return status;
 	}
 
+	@Override
+	public String toString() {
+		return "StatusResponse [idProposta=" + idProposta + ", documento=" + documento + ", nome=" + nome
+				+ ", resultadoSolicitacao=" + status + "]";
+	}
+
+	public PropostaStatus toModel() {
+	
+		if ("COM_RESTRICAO".equals(status)) {
+			return PropostaStatus.NAO_ELEGIVEL;
+		}
+		else {
+			return PropostaStatus.ELEGIVEL;
+		}
+	}	
+	
 }
