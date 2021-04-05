@@ -19,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.zup.desafio.Proposta.Proposta;
+import br.com.zup.desafio.Proposta.avisos.Aviso;
 import br.com.zup.desafio.Proposta.bloqueios.Bloqueio;
 
 @Entity

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.zup.desafio.Proposta.Proposta;
+import br.com.zup.desafio.Proposta.avisos.Aviso;
 import br.com.zup.desafio.Proposta.bloqueios.BloqueioResponse;
 
 public class CartaoResponseRouter {
