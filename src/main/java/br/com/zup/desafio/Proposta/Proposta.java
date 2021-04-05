@@ -3,6 +3,7 @@ package br.com.zup.desafio.Proposta;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,8 +11,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
+import br.com.zup.desafio.Proposta.cartoes.Cartao;
 import br.com.zup.desafio.Proposta.cartoes.CartaoRequestRouter;
 import br.com.zup.desafio.Proposta.status.StatusProposta;
 import br.com.zup.desafio.Proposta.status.StatusRequest;
@@ -43,9 +46,8 @@ public class Proposta {
 	@Column(nullable = false)
 	private PropostaStatus status = PropostaStatus.NAO_ELEGIVEL;
 
-	@Deprecated
-	public Proposta() {
-	}
+	@OneToOne(cascade = CascadeType.MERGE)
+	private Cartao cartao;
 
 	public Proposta(String documento, @Email String email, String nome, String endereco, BigDecimal salario) {
 		this.documento = documento;
@@ -53,34 +55,6 @@ public class Proposta {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.salario = salario;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getDocumento() {
-		return documento;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public BigDecimal getSalario() {
-		return salario;
-	}
-
-	public PropostaStatus getStatus() {
-		return status;
 	}
 
 	public void setStatus(StatusProposta status) {
@@ -133,4 +107,45 @@ public class Proposta {
 		return Objects.hash(getId(), getDocumento(), getNome(), getEmail(), getEndereco(), getSalario(), getStatus());
 	}
 
+	public void toCartaoResponse(Cartao cartao) {
+
+		this.cartao = cartao;
+
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public BigDecimal getSalario() {
+		return salario;
+	}
+
+	public PropostaStatus getStatus() {
+		return status;
+	}
+
+	public Cartao getCartao() {
+		return cartao;
+	}
+
+	@Deprecated
+	public Proposta() {
+	}
 }

@@ -1,11 +1,11 @@
 package br.com.zup.desafio.Proposta;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.Valid;
 
 import org.junit.Assert;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.zup.desafio.Proposta.cartoes.Cartao;
 import br.com.zup.desafio.Proposta.cartoes.CartaoResponseRouter;
 import br.com.zup.desafio.Proposta.cartoes.CartaoRouter;
 import br.com.zup.desafio.Proposta.status.StatusGateway;
@@ -49,8 +48,6 @@ public class PropostaController extends RuntimeException {
 
 	@Autowired
 	private CartaoRouter cartaoRouter;
-
-	private List<Proposta> propostas = new ArrayList<Proposta>();
 
 	private final Logger logger = LoggerFactory.getLogger(PropostaController.class);
 
@@ -89,7 +86,6 @@ public class PropostaController extends RuntimeException {
 	            
 	            propostaRepository.save(proposta);
 
-	            propostas.add(proposta);
 		 }		 catch (FeignException e) {
 
 	            proposta.setStatus(StatusProposta.COM_RESTRICAO);
@@ -104,6 +100,13 @@ public class PropostaController extends RuntimeException {
 	@Transactional
 	@Scheduled(fixedDelay = 5000)
 	public void criaCartao() {
+		
+		Query query = em.createNativeQuery("SELECT * FROM propostas WHERE status = :status AND" +
+                " cartao_id is null limit 10 for update", Proposta.class);
+
+        query.setParameter("status", PropostaStatus.ELEGIVEL.toString());
+
+        List<Proposta> propostas = query.getResultList();
 
 		System.out.println("Entrou no Scheduled");
 
@@ -111,10 +114,9 @@ public class PropostaController extends RuntimeException {
 			Proposta proposta = propostas.get(0);
 			System.out.println("Cadastrando cartão da proposta: " + proposta.getId());
 			CartaoResponseRouter  cartaoResponse = cartaoRouter.criaCartao(proposta.toCartaoRequest());
+			proposta.toCartaoResponse(cartaoResponse.toModel(proposta));
 
-			Cartao cartao = cartaoResponse.toModel(proposta);
-
-			em.merge(cartao);
+			em.merge(proposta);
 
 			propostas.remove(0);
 

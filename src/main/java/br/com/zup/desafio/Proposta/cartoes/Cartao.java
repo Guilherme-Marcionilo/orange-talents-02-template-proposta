@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Query;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.zup.desafio.Proposta.Proposta;
+import br.com.zup.desafio.Proposta.bloqueios.Bloqueio;
 
 @Entity
 @Table(name = "cartoes")
@@ -65,20 +68,10 @@ public class Cartao {
 	public Cartao() {
 	}
 
-	public Cartao(
-					String numeroCartao,
-					LocalDateTime emitidoEm,
-					Proposta proposta,
-					Double limite,
-					List<Bloqueio> bloqueios,
-					List<Aviso> avisos,
-					List<Carteira> carteiras,
-					List<Parcela> parcelas,
-					Renegociacao renegociacao,
-					Vencimento vencimento
-				)
-	{
-		
+	public Cartao(String numeroCartao, LocalDateTime emitidoEm, Proposta proposta, Double limite,
+			List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas,
+			Renegociacao renegociacao, Vencimento vencimento) {
+
 		this.numeroCartao = numeroCartao;
 		this.emitidoEm = emitidoEm;
 		this.proposta = proposta;
@@ -89,6 +82,19 @@ public class Cartao {
 		this.parcelas = parcelas;
 		this.renegociacao = renegociacao;
 		this.vencimento = vencimento;
+	}
+
+	public static Cartao findByNumeroCartao(String numeroCartao, EntityManager em) {
+		Query query = em.createQuery("SELECT c FROM Cartao c WHERE numeroCartao = :numero");
+
+		query.setParameter("numero", numeroCartao);
+
+		return (Cartao) query.getSingleResult();
+
+	}
+
+	public void addBloqueio(Bloqueio bloqueio) {
+		this.bloqueios.add(bloqueio);
 	}
 
 	public Long getId() {

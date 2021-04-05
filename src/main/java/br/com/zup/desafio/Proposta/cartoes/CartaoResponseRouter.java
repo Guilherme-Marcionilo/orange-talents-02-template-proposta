@@ -2,8 +2,10 @@ package br.com.zup.desafio.Proposta.cartoes;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.zup.desafio.Proposta.Proposta;
+import br.com.zup.desafio.Proposta.bloqueios.BloqueioResponse;
 
 public class CartaoResponseRouter {
 
@@ -18,7 +20,7 @@ public class CartaoResponseRouter {
 
 	private Double limite;
 
-	private List<Bloqueio> bloqueios;
+	private List<BloqueioResponse> bloqueios;
 
 	private List<Aviso> avisos;
 
@@ -32,8 +34,10 @@ public class CartaoResponseRouter {
 
 	//FALTA CRIAR O MÉTODO toModel no VencimentoResponse
 	public Cartao toModel(Proposta proposta) {
-		return new Cartao(id, emitidoEm, proposta, limite, bloqueios, avisos, carteiras, parcelas, renegociacao,
-				vencimento.toModel());
+		return new Cartao(id, emitidoEm, proposta, limite,
+				bloqueios.stream().map(BloqueioResponse::toModel).collect(Collectors.toList()),
+				avisos, carteiras, parcelas,
+				renegociacao, vencimento.toModel());
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class CartaoResponseRouter {
 		return limite;
 	}
 
-	public List<Bloqueio> getBloqueios() {
+	public List<BloqueioResponse> getBloqueios() {
 		return bloqueios;
 	}
 
@@ -88,6 +92,11 @@ public class CartaoResponseRouter {
 	public VencimentoResponse getVencimento() {
 		return vencimento;
 	}
+	
+	public BloqueioResponse getUltimoBloqueio() {
+		return bloqueios.get(bloqueios.size() - 1);
+	}
+	
 	// FIM GETTERS
 
 }

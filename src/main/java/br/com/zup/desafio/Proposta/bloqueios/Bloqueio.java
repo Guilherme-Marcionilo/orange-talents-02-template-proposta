@@ -1,4 +1,4 @@
-package br.com.zup.desafio.Proposta.cartoes;
+package br.com.zup.desafio.Proposta.bloqueios;
 
 import java.time.LocalDateTime;
 
@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import br.com.zup.desafio.Proposta.cartoes.Cartao;
 
 @Entity
 @Table(name = "bloqueios")
@@ -29,8 +31,15 @@ public class Bloqueio {
 	@ManyToOne
 	private Cartao cartao;
 
-	@Deprecated
-	public Bloqueio() {
+	private String ipCliente;
+
+	private String userAgent;
+
+	public void setInformacoesDeRequest(String remoteAddr, String agent, Cartao cartao) {
+
+		this.ipCliente = remoteAddr;
+		this.userAgent = agent;
+		this.cartao = cartao;
 	}
 
 	public Bloqueio(String idExterno, LocalDateTime bloqueadoEm, String sistemaResponsavel, boolean ativo,
@@ -40,6 +49,13 @@ public class Bloqueio {
 		this.sistemaResponsavel = sistemaResponsavel;
 		this.ativo = ativo;
 		this.cartao = cartao;
+	}
+
+	@Override
+	public String toString() {
+		return "Bloqueio [id=" + id + ", idExterno=" + idExterno + ", bloqueadoEm=" + bloqueadoEm
+				+ ", sistemaResponsavel=" + sistemaResponsavel + ", ativo=" + ativo + ", cartao=" + cartao
+				+ ", ipCliente=" + ipCliente + ", userAgent=" + userAgent + "]";
 	}
 
 	public Long getId() {
@@ -66,4 +82,15 @@ public class Bloqueio {
 		return cartao;
 	}
 
+	public String getIpCliente() {
+		return ipCliente;
+	}
+
+	public String getUserAgent() {
+		return userAgent;
+	}
+
+	@Deprecated
+	public Bloqueio() {
+	}
 }
