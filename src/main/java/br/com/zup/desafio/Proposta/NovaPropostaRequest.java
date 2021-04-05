@@ -15,7 +15,7 @@ public class NovaPropostaRequest {
 	
 	@NotBlank
 	@CPFouCNPJ
-	@UniqueValue(domainClass = Proposta.class, fieldName = "documento", message = "Ops! CPF ou CNPJ inválido, o valor deve ser único!")
+	@DocumentoUnico(fieldName = "documentoHashed", domainClass = Proposta.class)
 	private String documento;
 	
 	@NotBlank

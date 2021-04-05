@@ -14,6 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 
+import com.google.common.hash.Hashing;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import java.nio.charset.StandardCharsets;
+
 import br.com.zup.desafio.Proposta.cartoes.Cartao;
 import br.com.zup.desafio.Proposta.cartoes.CartaoRequestRouter;
 import br.com.zup.desafio.Proposta.status.StatusProposta;
@@ -49,12 +53,17 @@ public class Proposta {
 	@OneToOne(cascade = CascadeType.MERGE)
 	private Cartao cartao;
 
+	@Column(length = 64, unique = true)
+	private String documentoHashed;
+
 	public Proposta(String documento, @Email String email, String nome, String endereco, BigDecimal salario) {
 		this.documento = documento;
+		this.documento = Encryptors.text("abcabc", "cbacba").encrypt(documento);
 		this.email = email;
 		this.nome = nome;
 		this.endereco = endereco;
 		this.salario = salario;
+		this.documentoHashed = Hashing.sha256().hashString(documento, StandardCharsets.UTF_8).toString();
 	}
 
 	public void setStatus(StatusProposta status) {
