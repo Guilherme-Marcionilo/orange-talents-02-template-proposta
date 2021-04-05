@@ -1,8 +1,10 @@
-package br.com.zup.desafio.Proposta.cartoes;
+package br.com.zup.desafio.Proposta.carteiras;
 
 import java.time.LocalDateTime;
 
-public class CarteiraResponse  {
+import br.com.zup.desafio.Proposta.cartoes.Cartao;
+
+public class CarteiraResponse {
 
 	private String id;
 
@@ -19,6 +21,10 @@ public class CarteiraResponse  {
 	}
 
 	public Carteira toModel() {
+		return new Carteira(id, email, LocalDateTime.parse(associadaEm), emissor, cartao);
+	}
+
+	public Carteira toModel(Cartao cartao) {
 		return new Carteira(id, email, LocalDateTime.parse(associadaEm), emissor, cartao);
 	}
 

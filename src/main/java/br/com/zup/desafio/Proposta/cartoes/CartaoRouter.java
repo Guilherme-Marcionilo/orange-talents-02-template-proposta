@@ -10,6 +10,8 @@ import br.com.zup.desafio.Proposta.avisos.AvisoRequest;
 import br.com.zup.desafio.Proposta.avisos.AvisoResponse;
 import br.com.zup.desafio.Proposta.bloqueios.BloqueioRequest;
 import br.com.zup.desafio.Proposta.bloqueios.BloqueioResponse;
+import br.com.zup.desafio.Proposta.carteiras.CarteiraRequest;
+import br.com.zup.desafio.Proposta.carteiras.CarteiraResponse;
 
 @FeignClient(name = "cartoes", url = "${cartao.api}/api/cartoes")
 public interface CartaoRouter {
@@ -25,5 +27,8 @@ public interface CartaoRouter {
 
 	@PostMapping("/{id}/avisos")
 	AvisoResponse notificaAviso(@PathVariable String id, AvisoRequest request);
+	
+	@PostMapping("/{id}/carteiras")
+	public CarteiraResponse criaCarteira(@PathVariable String id, CarteiraRequest request);
 
 }

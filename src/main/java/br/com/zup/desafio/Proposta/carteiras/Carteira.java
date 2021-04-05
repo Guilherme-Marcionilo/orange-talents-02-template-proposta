@@ -1,4 +1,4 @@
-package br.com.zup.desafio.Proposta.cartoes;
+package br.com.zup.desafio.Proposta.carteiras;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import br.com.zup.desafio.Proposta.cartoes.Cartao;
 
 @Entity
 @Table(name = "carteiras")

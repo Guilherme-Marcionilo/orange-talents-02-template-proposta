@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import br.com.zup.desafio.Proposta.Proposta;
 import br.com.zup.desafio.Proposta.avisos.Aviso;
 import br.com.zup.desafio.Proposta.bloqueios.Bloqueio;
+import br.com.zup.desafio.Proposta.carteiras.Carteira;
 
 @Entity
 @Table(name = "cartoes")
@@ -96,6 +97,10 @@ public class Cartao {
 
 	public void addBloqueio(Bloqueio bloqueio) {
 		this.bloqueios.add(bloqueio);
+	}
+
+	public void addCarteira(Carteira carteira) {
+		this.carteiras.add(carteira);
 	}
 
 	public Long getId() {
