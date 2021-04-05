@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 
-import br.com.zup.desafio.Proposta.cartoes.CartaoRequest;
+import br.com.zup.desafio.Proposta.cartoes.CartaoRequestRouter;
 import br.com.zup.desafio.Proposta.status.StatusProposta;
 import br.com.zup.desafio.Proposta.status.StatusRequest;
 
@@ -23,11 +23,11 @@ public class Proposta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true, length = 20)
+	@Column(unique = true, length = 20, nullable = false)
 	private String documento;
 
 	@Email
-	@Column(unique = true, length = 50)
+	@Column(unique = true, length = 50, nullable = false)
 	private String email;
 
 	@Column(nullable = false)
@@ -109,9 +109,9 @@ public class Proposta {
 		this.status = status;
 	}
 
-	public CartaoRequest toCartaoRequest() {
+	public CartaoRequestRouter toCartaoRequest() {
 
-		return new CartaoRequest(documento, nome, id);
+		return new CartaoRequestRouter(documento, nome, id);
 
 	}
 

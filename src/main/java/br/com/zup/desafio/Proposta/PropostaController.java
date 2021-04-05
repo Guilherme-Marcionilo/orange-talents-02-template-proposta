@@ -25,11 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.zup.desafio.Proposta.cartoes.Cartao;
-import br.com.zup.desafio.Proposta.cartoes.CartaoResponse;
+import br.com.zup.desafio.Proposta.cartoes.CartaoResponseRouter;
 import br.com.zup.desafio.Proposta.cartoes.CartaoRouter;
 import br.com.zup.desafio.Proposta.status.StatusGateway;
 import br.com.zup.desafio.Proposta.status.StatusRequest;
 import br.com.zup.desafio.Proposta.status.StatusResponse;
+import feign.FeignException;
 
 @RestController
 @RequestMapping("/proposta")
@@ -103,7 +104,7 @@ public class PropostaController {
 		while (propostas.size() > 0) {
 			Proposta proposta = propostas.get(0);
 			System.out.println("Cadastrando cartão da proposta: " + proposta.getId());
-			CartaoResponse cartaoResponse = cartaoRouter.criaCartao(proposta.toCartaoRequest());
+			CartaoResponseRouter  cartaoResponse = cartaoRouter.criaCartao(proposta.toCartaoRequest());
 
 			Cartao cartao = cartaoResponse.toModel(proposta);
 

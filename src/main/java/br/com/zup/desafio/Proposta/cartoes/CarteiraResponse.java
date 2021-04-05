@@ -2,7 +2,7 @@ package br.com.zup.desafio.Proposta.cartoes;
 
 import java.time.LocalDateTime;
 
-public class CarteiraResponse {
+public class CarteiraResponse  {
 
 	private String id;
 

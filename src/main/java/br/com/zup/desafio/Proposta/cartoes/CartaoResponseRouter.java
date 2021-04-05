@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.com.zup.desafio.Proposta.Proposta;
 
-public class CartaoResponse {
+public class CartaoResponseRouter {
 
 	// NOSSO ID DO CARTAO CRIADO
 	private String id;
