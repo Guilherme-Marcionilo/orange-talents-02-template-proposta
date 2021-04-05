@@ -3,6 +3,8 @@ package br.com.zup.desafio.Proposta.carteiras;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +29,8 @@ public class Carteira {
 
 	private LocalDateTime associadaEm;
 
-	private String emissor;
+	@Enumerated(EnumType.STRING)
+	private TipoCarteiraEnum emissor;
 
 	// MUITAS CARTEIRAS PARA 1 CARTAO
 	@ManyToOne
@@ -37,7 +40,7 @@ public class Carteira {
 	public Carteira() {
 	}
 
-	public Carteira(@NotBlank String idExterno, String email, LocalDateTime associadaEm, String emissor,
+	public Carteira(@NotBlank String idExterno, String email, LocalDateTime associadaEm, TipoCarteiraEnum emissor,
 			Cartao cartao) {
 		this.idExterno = idExterno;
 		this.email = email;
@@ -62,7 +65,7 @@ public class Carteira {
 		return associadaEm;
 	}
 
-	public String getEmissor() {
+	public TipoCarteiraEnum  getEmissor() {
 		return emissor;
 	}
 
