@@ -11,6 +11,8 @@ public class StatusResponse {
 	private String nome;
 
 	private String status;
+	
+	private StatusProposta resultadoSolicitacao;
 
 	public Long getIdProposta() {
 		return idProposta;
@@ -43,6 +45,10 @@ public class StatusResponse {
 		else {
 			return PropostaStatus.ELEGIVEL;
 		}
+	}
+
+	public StatusProposta getResultadoSolicitacao() {
+		return resultadoSolicitacao;
 	}	
 	
 }

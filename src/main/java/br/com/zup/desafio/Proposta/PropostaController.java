@@ -28,13 +28,14 @@ import br.com.zup.desafio.Proposta.cartoes.Cartao;
 import br.com.zup.desafio.Proposta.cartoes.CartaoResponseRouter;
 import br.com.zup.desafio.Proposta.cartoes.CartaoRouter;
 import br.com.zup.desafio.Proposta.status.StatusGateway;
+import br.com.zup.desafio.Proposta.status.StatusProposta;
 import br.com.zup.desafio.Proposta.status.StatusRequest;
 import br.com.zup.desafio.Proposta.status.StatusResponse;
 import feign.FeignException;
 
 @RestController
 @RequestMapping("/proposta")
-public class PropostaController {
+public class PropostaController extends RuntimeException {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -74,20 +75,25 @@ public class PropostaController {
 		Proposta proposta = request.toModel();
 
 		StatusRequest req = new StatusRequest(proposta);
-		StatusResponse response = statusGateway.status(req);
 
 		// StatusProposta status = response.toModel();
-		PropostaStatus status = response.toModel();
-		proposta.updateStatus(status);
-		// proposta.setStatus(response.getResultadoSolicitacao());
+		
+		 try {
+	            StatusResponse response = statusGateway.status(proposta.toStatus());
+		
+	            proposta.setStatus(response.getResultadoSolicitacao());
 
-		System.out.println(proposta);
+	            System.out.println(proposta);
 
-		logger.info("Proposta Criada com Sucesso!", proposta.getDocumento());
-		propostaRepository.save(proposta);
+	            logger.info("Proposta Criada com Sucesso!", proposta.getDocumento());
+	            
+	            propostaRepository.save(proposta);
 
-		if (proposta.getStatus() == PropostaStatus.ELEGIVEL)
-			propostas.add(proposta);
+	            propostas.add(proposta);
+		 }		 catch (FeignException e) {
+
+	            proposta.setStatus(StatusProposta.COM_RESTRICAO);
+	        }
 
 		return ResponseEntity
 				.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
