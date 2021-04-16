@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Projeto de Proposta
 ## Desafio Orange Talents
 ## 000-SETUP-DO-PROJETO
@@ -558,3 +559,8 @@ Armazenar o documento do cliente de maneira criptografada.
 ### Resultado Esperado
 
 - O documento deve ser armazenado criptografado no banco de dados.
+=======
+# Por favor faça um Fork desse projeto!
+
+## Está em dúvida de como fazer um Fork? Não tem problema! [Aqui tem uma explicação do que entendemos que você deve considerar!](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo)
+>>>>>>> 2e868c18752adf0b375839963d4bfd4ad0cc8f98
